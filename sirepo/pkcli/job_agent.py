@@ -46,6 +46,12 @@ _PY2_CODES = frozenset(())
 
 cfg = None
 
+# TODO(e-carlin): sort
+def start_docker():
+    def _kill_unexpected_processes():
+
+    start()
+
 
 def start():
 #TODO(robnagler) commands need their own init hook like the server has

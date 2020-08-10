@@ -134,6 +134,13 @@ class DockerDriver(job_driver.DriverBase):
             op.msg.mpiCores = self.cfg[self.kind].get('cores', 1)
         return await super().prepare_send(op)
 
+    def _agent_cmd_stdin_env(self, **kwargs):
+        return job.agent_cmd_stdin_env(
+            ('sirepo', 'job_agent', 'start_docker'),
+            env=self._agent_env(),
+            **kwargs,
+        )
+
     @classmethod
     def _cmd_prefix(cls, host, tls_d):
         args = [
