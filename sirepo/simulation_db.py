@@ -874,8 +874,6 @@ def _init():
 
     global SCHEMA_COMMON, cfg, JOB_RUN_MODE_MAP
     cfg = pkconfig.init(
-        nfs_tries=(10, int, 'How many times to poll in hack_nfs_write_status'),
-        nfs_sleep=(0.5, float, 'Seconds sleep per hack_nfs_write_status poll'),
         sbatch_display=(None, str, 'how to display sbatch cluster to user'),
         tmp_dir=(None, pkio.py_path, 'Used by utilities (not regular config)'),
     )

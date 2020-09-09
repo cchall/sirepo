@@ -18,7 +18,6 @@ import inspect
 import random
 import re
 import signal
-import sirepo.pkcli.service
 import sirepo.sim_data
 import sirepo.util
 import time
@@ -176,6 +175,18 @@ class _App(PKDict):
         return self._sid[sim_name]
 
     async def get_sim(self, sim_name):
+        if True:
+            if sim_name not in self._sim_db:
+                self._sim_db[sim_name] = await self.client.get(
+                    '/simulation/{}/{}/0'.format(
+                        self.sim_type,
+                        self.get_sid(sim_name),
+                    ),
+                    self,
+                )
+            assert 'models' in self._sim_db[sim_name], \
+                f'{sim_name} {self._sim_db[sim_name]}'
+            return self._sim_db[sim_name]
         try:
             return self._sim_db[sim_name]
         except KeyError:
@@ -432,7 +443,7 @@ class _Sim(PKDict):
             '/run-cancel',
             PKDict(
                 report=self._report,
-                models=self._data.models,
+                models=self._data.get('models'),
                 simulationId=self._sid,
                 simulationType=self._app.sim_type,
             ),
@@ -465,6 +476,7 @@ class _Sim(PKDict):
 
     async def _run_sim(self):
         r = self._report
+#TODO(robnagler) should this come from sim_data?
         if 'animation' in self._report.lower() and self._app.sim_type != 'srw':
             r = 'animation'
         return await self._app.client.post(
@@ -520,11 +532,10 @@ def _init():
     global cfg
     if cfg:
         return
-    c = sirepo.pkcli.service._cfg()
     cfg = pkconfig.init(
         emails=(['one@radia.run', 'two@radia.run', 'three@radia.run'], list, 'emails to test'),
-        server_uri=(
-            'http://{}:{}'.format(c.ip, c.port),
+        server_uri=pkconfig.RequiredUnlessDev(
+            '',
             str,
             'where to send requests',
         ),
@@ -532,5 +543,10 @@ def _init():
         run_max_secs=(120, pkconfig.parse_seconds, 'maximum amount of time to let a simulation run'),
         validate_cert=(not pkconfig.channel_in('dev'), bool, 'whether or not to validate server tls cert')
     )
+    if cfg.server_uri:
+        return
+    assert pkconfig.channel_in('dev')
+    import sirepo.pkcli.service
+    cfg.server_uri = sirepo.pkcli.service.flask_uri()
 
 _init()

@@ -48,6 +48,10 @@ def flask():
         )
 
 
+def flask_uri():
+    return f'http://{_cfg().ip}:{_cfg().port}'
+
+
 def http():
     """Starts the Flask server and job_supervisor.
 

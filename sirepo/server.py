@@ -421,7 +421,7 @@ def api_root(path_info):
     u = sirepo.uri.unchecked_root_redirect(path_info)
     if u:
         return http_reply.gen_redirect(u)
-    sirepo.util.raise_not_found(f'uknown path={path_info}')
+    sirepo.util.raise_not_found(f'unknown path={path_info}')
 
 
 @api_perm.require_user

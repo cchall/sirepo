@@ -91,6 +91,7 @@ def call_api(func_or_name, kwargs=None, data=None):
         # this is ok to call (even if s is None)
         sirepo.http_request.set_sim_type(s)
     sirepo.cookie.save_to_cookie(r)
+    pkdp(r.headers)
     return r
 
 
@@ -187,6 +188,7 @@ def _dispatch(path):
     Returns:
         Flask.response
     """
+    pkdp(path)
     sirepo.auth.process_request()
     try:
         if path is None:
