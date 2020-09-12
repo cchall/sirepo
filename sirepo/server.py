@@ -19,6 +19,7 @@ from sirepo import srschema
 from sirepo import uri_router
 import flask
 import importlib
+import os
 import re
 import sirepo.sim_data
 import sirepo.srdb
@@ -622,6 +623,7 @@ def init(uwsgi=None, use_reloader=False):
     )
     _app.config.update(
         PROPAGATE_EXCEPTIONS=True,
+        SECRET_KEY=os.urandom(32),
     )
     _app.sirepo_uwsgi = uwsgi
     _app.sirepo_use_reloader = use_reloader
