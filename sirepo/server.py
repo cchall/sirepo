@@ -621,10 +621,7 @@ def init(uwsgi=None, use_reloader=False):
         static_folder=None,
         template_folder=str(simulation_db.STATIC_FOLDER),
     )
-    _app.config.update(
-        PROPAGATE_EXCEPTIONS=True,
-        SECRET_KEY=os.urandom(32),
-    )
+    _app.config['PROPAGATE_EXCEPTIONS'] = True
     _app.sirepo_uwsgi = uwsgi
     _app.sirepo_use_reloader = use_reloader
     uri_router.init(_app, simulation_db)
