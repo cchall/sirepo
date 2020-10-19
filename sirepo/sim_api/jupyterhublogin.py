@@ -53,8 +53,8 @@ def api_redirectJupyterHub():
     return sirepo.http_reply.gen_json_ok()
 
 
-def jupyterhub_user_name(have_simulation_db=True):
-    return _hub_user(sirepo.auth.logged_in_user(check_path=have_simulation_db))
+def unchecked_jupyterhub_user_name(have_simulation_db=True):
+    return _unchecked_hub_user(sirepo.auth.logged_in_user(check_path=have_simulation_db))
 
 
 def init_apis(*args, **kwargs):
@@ -100,7 +100,7 @@ def _create_user_if_not_found():
             n += _HUB_USER_SEP + random.choice(string.ascii_lowercase)
         return n
 
-    if jupyterhub_user_name():
+    if unchecked_jupyterhub_user_name():
         return False
     with sirepo.auth_db.thread_lock:
         JupyterhubUser(
@@ -112,7 +112,7 @@ def _create_user_if_not_found():
 
 
 def _event_auth_logout(kwargs):
-    flask.g.jupyterhub_logout_user_name = _hub_user(kwargs.uid)
+    flask.g.jupyterhub_logout_user_name = _unchecked_hub_user(kwargs.uid)
 
 
 def _event_end_api_call(kwargs):
@@ -147,14 +147,6 @@ def _event_github_authorized(kwargs):
     raise sirepo.util.Redirect('jupyter')
 
 
-def _hub_user(uid):
-    with sirepo.auth_db.thread_lock:
-        u = JupyterhubUser.search_by(uid=uid)
-        if u:
-            return u.user_name
-        return None
-
-
 def _init_model(base):
     global JupyterhubUser
 
@@ -168,5 +160,15 @@ def _init_model(base):
         )
 
 
+def _unchecked_hub_user(uid):
+    with sirepo.auth_db.thread_lock:
+        u = JupyterhubUser.search_by(uid=uid)
+        if u:
+            return u.user_name
+        return None
+
+
 def _user_dir():
-    return cfg.dst_db_root.join(jupyterhub_user_name())
+    u = unchecked_jupyterhub_user_name()
+    assert u, 'must have user to get dir'
+    return cfg.dst_db_root.join(u)
