@@ -32,7 +32,7 @@ build_as_run_user() {
     umask 022
     sirepo_boot_init
     git clone -q --depth=50 https://github.com/radiasoft/pykern
-    git clone -q --depth=50 "--branch=${TRAVIS_BRANCH:-master}" \
+    git clone -q --depth=50 "--branch=ecarlin" \
         https://github.com/radiasoft/sirepo
     cd sirepo
     if [[ ${TRAVIS_COMMIT:+1} ]]; then

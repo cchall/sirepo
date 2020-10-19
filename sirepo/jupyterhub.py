@@ -61,8 +61,6 @@ class Authenticator(jupyterhub.auth.Authenticator):
 
 
 def _set_cookie(handler):
-    pkdp('nnnnnnnnnnnnnnnnnn {}', sirepo.cookie.cfg.http_name)
-    pkdp('cccccccccccccccccccc {}', handler.get_cookie(sirepo.cookie.cfg.http_name))
     sirepo.cookie.set_cookie_for_utils(
         handler.get_cookie(sirepo.cookie.cfg.http_name),
     )
