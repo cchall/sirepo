@@ -52,9 +52,11 @@ SIREPO.app.controller('ControlsController', function(appState, controlsService, 
     self.basicNames = [];
 
     self.simHandleStatus = function(data) {
-        if (data.frameCount) {
-            frameCache.setFrameCount(1);
+        if (data.monitorValues) {
+            // TODO(e-carlin): if remove delete frameCache injection above
+            // frameCache.setFrameCount(1);
             // TODO(e-carlin): load reports
+            srdbg(`xxxxxxxxxxxxxxx `, data.monitorValues);
         }
     };
 
