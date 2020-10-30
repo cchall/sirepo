@@ -73,7 +73,7 @@ SIREPO.app.controller('ControlsController', function(appState, controlsService, 
                 // monitor values and the bpmMonitorPlots
                 $scope.$broadcast(
                     'sr-pointData-' + elementForName(value.name).name,
-                    [0.09, 0.05],
+                    [value.x, value.y],
                 );
             }, 1000);
         });
