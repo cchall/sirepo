@@ -47,7 +47,7 @@ SIREPO.app.factory('controlsService', function(appState) {
 });
 
 // TODO(e-carlin): remove $timeout
-SIREPO.app.controller('ControlsController', function(appState, controlsService, latticeService, persistentSimulation, $scope, $timeout) {
+SIREPO.app.controller('ControlsController', function(appState, controlsService, frameCache, latticeService, persistentSimulation, $scope, $timeout) {
     var self = this;
     self.simScope = $scope;
     self.latticeService = latticeService;
@@ -125,6 +125,7 @@ SIREPO.app.controller('ControlsController', function(appState, controlsService, 
 
     self.simHandleStatus = function(data) {
         if (data.monitorValues) {
+            frameCache.setFrameCount(1);
             updateFromMonitorValues(data.monitorValues)
         }
     };
