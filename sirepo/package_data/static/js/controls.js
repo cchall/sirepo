@@ -111,7 +111,9 @@ SIREPO.app.controller('ControlsController', function(appState, controlsService, 
 
     function updateFromMonitorValues(monitorValues) {
         monitorValues.forEach((value) => {
-            // TODO(e-carlin): shouldn't need a timeout
+            // TODO(e-carlin): How can I eliminate the timeout. Needed because
+            // on first load self.watches needs to be populated before there is
+            // anyone listening to the broadcast
             $timeout(function () {
                 // TODO(e-carlin): need a better connection between element name,
                 // monitor values and the bpmMonitorPlots
@@ -119,7 +121,7 @@ SIREPO.app.controller('ControlsController', function(appState, controlsService, 
                     'sr-pointData-' + elementForName(value.name).name,
                     [value.x, value.y],
                 );
-            }, 1000);
+            });
         });
     }
 

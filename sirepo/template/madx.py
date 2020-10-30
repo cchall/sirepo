@@ -136,8 +136,6 @@ def code_var(variables):
     )
 
 def extract_monitor_values(run_dir):
-    # TODO(e-carlin): how to get filename?
-    # t = madx_parser.parse_tfs_file(run_dir.join(_TWISS_OUTPUT_FILE))
     t = madx_parser.parse_tfs_file(run_dir.join('twiss.file.tfs'))
     l = []
     for i, e in enumerate(t.keyword):
