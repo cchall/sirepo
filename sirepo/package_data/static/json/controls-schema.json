@@ -37,11 +37,20 @@
             "hkick": ["HKICK", "MiniFloat", 0.0, "The horizontal momentum change $\\delta PX$"],
             "vkick": ["VKICK", "MiniFloat", 0.0, "The vertical momentum change $\\delta PY$"]
         },
+        "MONITOR": {
+        },
         "QUADRUPOLE": {
             "k1": ["K1 [$\\bf m^{-2}$]", "MiniFloat", 0.0, "The normal quadrupole coefficient"]
         },
         "VKICKER": {
             "kick": ["KICK", "MiniFloat", 0.0, "The momentum change $\\delta PY$"]
+        },
+        "watchpointReport": {
+            "plotRangeType": ["Range", "PlotRangeType", "fixed"],
+            "horizontalSize": ["Horizontal Size", "Float", 0.003],
+            "verticalSize": ["Vertical Size", "Float", 0.003],
+            "horizontalOffset": ["Horizontal Offset", "Float", 0.0],
+            "verticalOffset": ["Vertical Offset", "Float", 0.0]
         }
     },
     "strings": {
@@ -73,6 +82,11 @@
             ],
             "advanced": []
         },
+        "MONITOR": {
+            "title": "MONITOR",
+            "description": "A beam monitor has no specific effect on the beam and behaves like a drift space. In addition it serves to record the beam position for closed orbit correction.",
+            "advanced": []
+        },
         "QUADRUPOLE": {
             "title": "QUADRUPOLE",
             "description": "Quadrupole",
@@ -88,6 +102,8 @@
             "basic": [
                 "kick"
             ]
+        },
+        "watchpointReport": {
         }
     }
 }
