@@ -47,37 +47,14 @@ SIREPO.app.factory('controlsService', function(appState) {
 });
 
 // TODO(e-carlin): remove $timeout
-SIREPO.app.controller('ControlsController', function(appState, controlsService, frameCache, latticeService, persistentSimulation, $scope, $timeout) {
+SIREPO.app.controller('ControlsController', function(appState, controlsService, latticeService, persistentSimulation, $scope, $timeout) {
     var self = this;
     self.simScope = $scope;
     self.latticeService = latticeService;
 
     self.advancedNames = [];
     self.basicNames = [];
-
-    self.simHandleStatus = function(data) {
-        if (data.monitorValues) {
-            // TODO(e-carlin): if remove delete frameCache injection above
-            // frameCache.setFrameCount(1);
-            updateFromMonitorValues(data.monitorValues)
-        }
-    };
-
     self.beamPositionReports = [];
-    // TODO(e-carlin): sort all meths in here
-    function updateFromMonitorValues(monitorValues) {
-        monitorValues.forEach((value) => {
-            // TODO(e-carlin): shouldn't need a timeout
-            $timeout(function () {
-                // TODO(e-carlin): need a better connection between element name,
-                // monitor values and the bpmMonitorPlots
-                $scope.$broadcast(
-                    'sr-pointData-' + elementForName(value.name).name,
-                    [value.x, value.y],
-                );
-            }, 1000);
-        });
-    }
 
     function elementForId(id) {
         return elementForValue('_id', id);
@@ -131,6 +108,26 @@ SIREPO.app.controller('ControlsController', function(appState, controlsService, 
             },
         };
     }
+
+    function updateFromMonitorValues(monitorValues) {
+        monitorValues.forEach((value) => {
+            // TODO(e-carlin): shouldn't need a timeout
+            $timeout(function () {
+                // TODO(e-carlin): need a better connection between element name,
+                // monitor values and the bpmMonitorPlots
+                $scope.$broadcast(
+                    'sr-pointData-' + elementForName(value.name).name,
+                    [value.x, value.y],
+                );
+            }, 1000);
+        });
+    }
+
+    self.simHandleStatus = function(data) {
+        if (data.monitorValues) {
+            updateFromMonitorValues(data.monitorValues)
+        }
+    };
 
     appState.whenModelsLoaded($scope, function() {
         self.editorColumns = [];
@@ -271,7 +268,6 @@ SIREPO.app.directive('bpmMonitorPlot', function(appState, plot2dService, plottin
             });
 
             $scope.$on('sr-pointData-' + $scope.modelName, function(event, point) {
-                srdbg(`pppppppp `, point);
                 if (! point) {
                     return;
                 }
